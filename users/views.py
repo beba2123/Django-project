@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login,  authenticate , logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import coustomUserCreationForm
+from .forms import coustomUserCreationForm, ProfileForm
 # Create your views here.
 def userlogin(request):
     if request.user.is_authenticated:
@@ -76,5 +76,6 @@ def userAccount(request):
 
 @login_required(login_url='login')
 def editAccount(request):
-    context ={}
+    form = ProfileForm()
+    context ={'form': form}
     return render(request, 'users/profile_form.html',context)

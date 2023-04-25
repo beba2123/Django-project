@@ -34,19 +34,4 @@ class Skill(models.Model):
          return str(self.name)
 
 
-def createProfile(sender, instance, created, **kwargs): 
-     if created:
-          user = instance
-          profile = Profile.objects.create(
-               user = user,
-               username = user.username,
-               email = user.email
-          )
-def userDelete(sender, instance, **kwargs):
-     user = instance.user
-     user.delete()
-     print('profile and user deleted..!!')
-
-post_save.connect(createProfile, sender=User)
-post_delete.connect(userDelete, sender=Profile)
 

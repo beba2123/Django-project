@@ -3,23 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from.models import  Project
 from .forms import ProjectForm
-projectsList=[
-    {
-    'id':'1',
-    'title':'Ecommerce website',
-    'discription':'Fully functional ecommerce website'
-    },
-    {
-    'id':'2',
-    'title':'Portfolio website',
-    'discription':'This was a project where i built out my portfolio'
-    },
-    {
-    'id':'3',
-    'title':'Social Network',
-    'discription':'Awesome open source project i am still working on'
-    },
-]
+
 
 def projects(request):
    projects= Project.objects.all()

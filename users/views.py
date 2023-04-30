@@ -1,10 +1,12 @@
 from django.shortcuts import redirect, render
-from . models import Profile
+from . models import Profile, Skill
 from django.contrib.auth.models import User
 from django.contrib.auth import login,  authenticate , logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from .forms import coustomUserCreationForm, ProfileForm, SkillForm
+from .utils import searchProfile
 # Create your views here.
 def userlogin(request):
     if request.user.is_authenticated:
@@ -55,12 +57,7 @@ def registeruser(request):
 
 def profiles(request):
     search_query = ''
-
-    if request.GET.get('search_query'):
-        search_query = request.GET.get('search_query')
-
-    
-    profiles = Profile.objects.filter(name__icontains=search_query)
+    profiles, search_query = searchProfile(request)
     context = {'profiles': profiles, 'search_query':search_query}
     return render(request, 'users/profiles.html', context)
 

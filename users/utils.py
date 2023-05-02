@@ -1,6 +1,33 @@
 from .models import Profile, Skill
 from django.db.models import Q
+from django.core.paginator import Paginator  , PageNotAnInteger  , EmptyPage
 
+def  paginateProfiles(request, profiles, result):
+        
+    page= request.GET.get('page')
+    paginator = Paginator(profiles, result) #this is used for  list 3 projects per all projects.
+
+    try:
+        profiles= paginator.page(page) #this is used for listing the 3-projects per page.
+    except PageNotAnInteger:
+        page =1
+        profiles= paginator.page(page)
+    except EmptyPage:
+       page = paginator.num_pages  #used for giving the last page in my webite.
+       profiles = paginator.page(page)
+    
+    leftIndex = (int(page)-4)
+
+    if leftIndex < 1:
+       leftIndex =1;  
+    
+    rightIndex = (int(page)+5);
+    if rightIndex > paginator.num_pages:
+       rightIndex =paginator.num_pages +1;
+
+
+    custom_range = range(leftIndex, rightIndex) #for creating  interval  between pagination button numbers..
+    return custom_range, profiles
 def searchProfile(request):
     search_query = ''
 

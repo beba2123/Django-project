@@ -4,40 +4,16 @@ from django.http import HttpResponse
 from.models import  Project , Tag
 from .forms import ProjectForm
 from  django.db.models import Q
-from  .utils import searchProject
+from  .utils import searchProject , paginateProject
 from django.core.paginator import Paginator  , PageNotAnInteger  , EmptyPage
 
 
 
 def projects(request):
     projects, search_query = searchProject(request)
-    
-    page= request.GET.get('page')
-    result= 3
-    paginator = Paginator(projects, result) #this is used for  list 3 projects per all projects.
-
-    try:
-        projects= paginator.page(page) #this is used for listing the 3-projects per page.
-    except PageNotAnInteger:
-        page=1
-        projects= paginator.page(page)
-    except EmptyPage:
-       page = paginator.num_pages  #used for giving the last page in my webite.
-       projects = paginator.page(page)
-    
-    leftIndex = (int(page)-4)
-
-    if leftIndex < 1:
-       leftIndex =1;
-    
-    rightIndex = (int(page)+5);
-    if rightIndex > paginator.num_pages:
-       rightIndex =paginator.num_pages
-
-
-    custom_range = range(leftIndex, rightIndex) #for creating  interval  between pagination button numbers..
+    custom_range, projects = paginateProject(request, projects, 6)
     context = {'projects':projects ,'search_query': search_query , 
-               'paginator': paginator, 'custom_range':custom_range}
+               'custom_range':custom_range}
     return render(request,'projectss/projects.html',context)
 def project(request,pk):
     projectobj=Project.objects.get(id=pk)

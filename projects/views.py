@@ -24,7 +24,20 @@ def projects(request):
     except EmptyPage:
        page = paginator.num_pages  #used for giving the last page in my webite.
        projects = paginator.page(page)
-    context = {'projects':projects ,'search_query': search_query , 'paginator': paginator}
+    
+    leftIndex = (int(page)-4)
+
+    if leftIndex < 1:
+       leftIndex =1;
+    
+    rightIndex = (int(page)+5);
+    if rightIndex > paginator.num_pages:
+       rightIndex =paginator.num_pages
+
+
+    custom_range = range(leftIndex, rightIndex) #for creating  interval  between pagination button numbers..
+    context = {'projects':projects ,'search_query': search_query , 
+               'paginator': paginator, 'custom_range':custom_range}
     return render(request,'projectss/projects.html',context)
 def project(request,pk):
     projectobj=Project.objects.get(id=pk)

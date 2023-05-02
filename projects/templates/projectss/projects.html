@@ -54,9 +54,13 @@
         </div>
       </div>
     </section>
-
+    {% if projectss.has_other_page %}
     <div class="pagination">
       <ul class="container">
+
+          {% if projects.has_previous %}
+          <li><a href="?page={{projects.previous_page_number}}"  class="btn page-link">&#10094; Prev</a></li>
+          {%endif%}        
           {% for page in paginator.page_range%}
             {% if page  == projects.number %}  
             {% comment %} this is for making the button black or diffrent color the current page {% endcomment %}
@@ -65,8 +69,15 @@
           <li><a href="?page={{page}}"  class="btn page-link">{{page}}</a></li>
             {% endif %}
           {% endfor %}
+          {% if projects.has_next %}
+          <li><a href="?page={{projects.next_page_number}}"  class="btn page-link">Next &#10097 ;</a></li>
+          {%endif%}  
+
+
+
       </ul>
     </div>
+    {%endif%}
   </main>
 
 {% endblock content %}

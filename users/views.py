@@ -57,7 +57,7 @@ def registeruser(request):
 
 def profiles(request):
     profiles, search_query = searchProfile(request)
-    custom_range, profiles = paginateProfiles(request, profiles, 1)
+    custom_range, profiles = paginateProfiles(request, profiles, 3)
     context = {'profiles': profiles, 'search_query':search_query, 'custom_range':custom_range}
     return render(request, 'users/profiles.html', context)
 
@@ -128,6 +128,6 @@ def deleteSkill(request,pk):
     if request.method == 'POST':
         skill.delete()
         messages.success(request, 'Skill was deleted successfully...!')
-        return redirect('account')
+        return redirect('account') 
     context = {'object': skill}
     return render( request, 'delete_object.html', context)

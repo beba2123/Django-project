@@ -5,13 +5,26 @@ from.models import  Project , Tag
 from .forms import ProjectForm
 from  django.db.models import Q
 from  .utils import searchProject
-
+from django.core.paginator import Paginator  , PageNotAnInteger  , EmptyPage
 
 
 
 def projects(request):
     projects, search_query = searchProject(request)
-    context = {'projects':projects ,'search_query': search_query}
+    
+    page= request.GET.get('page')
+    result= 3
+    paginator = Paginator(projects, result) #this is used for  list 3 projects per all projects.
+
+    try:
+        projects= paginator.page(page) #this is used for listing the 3-projects per page.
+    except PageNotAnInteger:
+        page=1
+        projects= paginator.page(page)
+    except EmptyPage:
+       page = paginator.num_pages  #used for giving the last page in my webite.
+       projects = paginator.page(page)
+    context = {'projects':projects ,'search_query': search_query , 'paginator': paginator}
     return render(request,'projectss/projects.html',context)
 def project(request,pk):
     projectobj=Project.objects.get(id=pk)

@@ -17,6 +17,11 @@ class Project(models.Model):
                          primary_key=True, editable=False)
       def __str__(self):#..this is used to change the project title  into string form
          return self.title
+      
+      class Meta:
+          ordering = ['created'] #used for ascending the Project based on the time it is posted
+
+
 class Review(models.Model):
      VOTE_TYPE=(
      ('up','up vote'), #this means (actual value, human readable value)

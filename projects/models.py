@@ -20,7 +20,22 @@ class Project(models.Model):
       
       class Meta:
           ordering = ['created'] #used for ascending the Project based on the time it is posted
+      @property
+      def reviewers(self):
+           queryset = self.review_set.all().values_list('owner__id', flat = True)
+           return queryset
 
+      @property
+      def getVoteCount(self):
+         reviews = self.review__set.all()
+         upVotes = reviews.filter(value = 'up').count()
+         totalVotes = reviews.count()
+
+         ratio = (upVotes / totalVotes) * 100;
+         self.vote_total = totalVotes;
+         self.vote_ratio = ratio;
+
+         self.save();
 
 class Review(models.Model):
      VOTE_TYPE=(

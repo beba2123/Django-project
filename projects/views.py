@@ -25,6 +25,8 @@ def project(request,pk):
        review.Project = projectobj
        review.owner = request.user.profile
        review.save()
+       projectobj.getVoteCount
+       
        messages.success(request, 'Your review was successfully submitted')
        
     return render(request,'projectss/SingleProject.html',{'project':projectobj, 'form': form})

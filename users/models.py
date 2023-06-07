@@ -22,7 +22,7 @@ class Profile(models.Model):
                          primary_key=True, editable=False)
     def __str__(self):#..this is used to change the user title  into string form
          return str(self.username)
-
+    
 class Skill(models.Model):
      owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
      name = models.CharField(max_length=200, blank=True, null=True)

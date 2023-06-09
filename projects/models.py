@@ -27,7 +27,7 @@ class Project(models.Model):
 
       @property
       def getVoteCount(self):
-         reviews = self.review__set.all()
+         reviews = self.review_set.all()
          upVotes = reviews.filter(value = 'up').count()
          totalVotes = reviews.count()
 

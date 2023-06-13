@@ -153,7 +153,10 @@ def viewMessage(request, pk):
 def createMessage(request, pk):
     recipient = Profile.objects.get(id = pk)
     form = MessageForm()
-
+    try:
+        sender = request.user.profile
+    except:
+        sender = None
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -164,5 +167,7 @@ def createMessage(request, pk):
                 message.name = sender.name
                 message.email = sender.email
             message.save()
+            message.success(request, 'your message is succesfully sent!')
+            return redirect('user-profile', pk=recipient.id)
     context = {'recipient': recipient, 'form': form}
     return render(request, 'users/message_form.html', context)

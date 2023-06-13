@@ -40,7 +40,7 @@ class Message(models.Model):
      name = models.CharField(max_length=200, null=True, blank=True)
      email = models.CharField(max_length=200, null=True, blank=True)
      subject = models.CharField(max_length=200, null=True, blank=True)
-     body = models.TextField
+     body = models.TextField(blank=True, null=True)
      is_read = models.BooleanField(default=False, null=True)
      created=models.DateTimeField(auto_now_add=True)
      id = models.UUIDField(default=uuid.uuid4, unique=True,

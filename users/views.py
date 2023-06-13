@@ -5,7 +5,7 @@ from django.contrib.auth import login,  authenticate , logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .forms import coustomUserCreationForm, ProfileForm, SkillForm
+from .forms import coustomUserCreationForm, ProfileForm, SkillForm, MessageForm
 from .utils import searchProfile , paginateProfiles
 # Create your views here.
 def userlogin(request):
@@ -151,5 +151,18 @@ def viewMessage(request, pk):
     return render(request, 'users/message.html', content);
 
 def createMessage(request, pk):
-    context = {}
+    recipient = Profile.objects.get(id = pk)
+    form = MessageForm()
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = sender
+            message.recipient = recipient
+            if sender:
+                message.name = sender.name
+                message.email = sender.email
+            message.save()
+    context = {'recipient': recipient, 'form': form}
     return render(request, 'users/message_form.html', context)
